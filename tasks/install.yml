@@ -1,14 +1,14 @@
 ---
 # file: install.yml
-- name: Install htop
-  apt: name=htop update_cache=yes
-       state=present
-  become: yes
-
-- name: Install iotop
-  apt: name=iotop update_cache=yes
-       state=present
-  become: yes
+# - name: Install htop
+#   apt: name=htop update_cache=yes
+#        state=present
+#   become: yes
+#
+# - name: Install iotop
+#   apt: name=iotop update_cache=yes
+#        state=present
+#   become: yes
 
 - name: Install nload
   apt: name=nload update_cache=yes
@@ -20,7 +20,7 @@
     name: "{{ druid_user }}"
 
 - name: Create druid deploy directory
-  file: path=/opt/druid state=directory mode=0755
+  file: path={{ druid_install_dir }} state=directory mode=0755
         owner={{ druid_user }}
   become: yes
 
@@ -73,34 +73,35 @@
 
 - name: Download Druid version {{ druid_version }}
   get_url:
-    url: http://static.druid.io/artifacts/releases/druid-{{ druid_version }}-bin.tar.gz
-    dest: /opt/druid/druid-{{ druid_version }}-bin.tar.gz
+    # url: http://static.druid.io/artifacts/releases/druid-{{ druid_version }}-bin.tar.gz
+    url: https://dlcdn.apache.org/druid/{{ druid_version }}/apache-druid-{{ druid_version }}-bin.tar.gz
+    dest: "{{ druid_install_dir }}/druid-{{ druid_version }}-bin.tar.gz"
     checksum: sha256:{{ druid_checksum }}
     mode: 0777
 
 - name: Un-tar druid download
   unarchive:
-    src: /opt/druid/druid-{{ druid_version }}-bin.tar.gz
-    dest: /opt/druid/
+    src: "{{ druid_install_dir }}/druid-{{ druid_version }}-bin.tar.gz"
+    dest: "{{ druid_install_dir }}/"
     copy: no
-    creates: /opt/druid/druid-{{ druid_version }}
+    creates: "{{ druid_install_dir }}/druid-{{ druid_version }}"
   become: yes
 
 - name: Change ownership of download path
-  file: path=/opt/druid owner={{ druid_user }} recurse=yes mode=0755
+  file: path={{ druid_install_dir }} owner={{ druid_user }} recurse=yes mode=0755
   become: yes
 
-- name: Download extensions with pull-deps
-  shell: 'java -classpath "{{ druid_path }}lib/*" -Ddruid.extensions.directory={{ druid_path }}extensions -Ddruid.extensions.hadoopDependenciesDir={{ druid_path }}hadoop-dependencies io.druid.cli.Main tools pull-deps -c {{ item.group_id }}:{{ item.artifact_id }}:{{ item.version }}'
-  with_items: "{{ druid_community_extensions }}"
-  when: druid_community_extensions
-  become: yes
+# - name: Download extensions with pull-deps
+#   shell: 'java -classpath "{{ druid_path }}lib/*" -Ddruid.extensions.directory={{ druid_path }}extensions -Ddruid.extensions.hadoopDependenciesDir={{ druid_path }}hadoop-dependencies io.druid.cli.Main tools pull-deps -c {{ item.group_id }}:{{ item.artifact_id }}:{{ item.version }}'
+#   with_items: "{{ druid_community_extensions }}"
+#   when: druid_community_extensions
+#   become: yes
 
-- name: Add SIGAR library
-  copy:
-    src: files/sigar-1.6.5.132.jar
-    dest: "{{ druid_path }}lib/sigar-1.6.5.132.jar"
-    owner: "{{ druid_user }}"
-    group: staff
-    mode: 755
-  when: druid_install_sigar is defined and druid_install_sigar
+# - name: Add SIGAR library
+#   copy:
+#     src: files/sigar-1.6.5.132.jar
+#     dest: "{{ druid_path }}lib/sigar-1.6.5.132.jar"
+#     owner: "{{ druid_user }}"
+#     group: staff
+#     mode: 755
+#   when: druid_install_sigar is defined and druid_install_sigar

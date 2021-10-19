@@ -1,9 +1,12 @@
 ---
 # file: main.yml
 
+#
+druid_install_dir: /var/lib/druid
+
 # druid versions
-druid_version: 0.11.0
-druid_checksum: d50218d11f97612acc1447914e113f1869997640de586daabd85828440c4c546
+druid_version: 0.22.0
+druid_checksum: 5ce9ba185361a20694fd107ffc818fb42d13a44911d010739227b5c62a8fc1da
 
 # configuration
 druid_javascript_enabled: true
