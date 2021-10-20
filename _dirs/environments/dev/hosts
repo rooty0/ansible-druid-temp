@@ -1,0 +1,8 @@
+db-dwh1.dev.cp.adc.spb ansible_ssh_host=10.241.1.50
+db-dwh2.dev.cp.adc.spb ansible_ssh_host=10.241.1.51
+db-dwh3.dev.cp.adc.spb ansible_ssh_host=10.241.1.52
+
+[dwh]
+db-dwh1.dev.cp.adc.spb
+db-dwh2.dev.cp.adc.spb
+db-dwh3.dev.cp.adc.spb

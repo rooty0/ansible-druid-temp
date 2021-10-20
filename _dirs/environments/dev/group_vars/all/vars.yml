@@ -1,0 +1,17 @@
+hosts_content: |
+  192.168.36.2 app-portal-prod.dev.cp.adc.spb
+  192.168.36.5 app-search1.dev.cp.adc.spb
+  192.168.36.6 app-search2.dev.cp.adc.spb
+  192.168.36.7 app-search3.dev.cp.adc.spb
+  192.168.36.10 db-dwh1.dev.cp.adc.spb
+  192.168.36.11 db-dwh2.dev.cp.adc.spb
+  192.168.36.12 db-dwh3.dev.cp.adc.spb
+  192.168.36.15 mon-db1.dev.cp.adc.spb
+  192.168.36.20 mon-log1.dev.cp.adc.spb
+  192.168.36.21 mon-log2.dev.cp.adc.spb
+  192.168.36.22 mon-log3.dev.cp.adc.spb
+  192.168.36.25 kaf-broker1.dev.cp.adc.spb
+  192.168.36.26 kaf-broker2.dev.cp.adc.spb
+  192.168.36.27 kaf-broker3.dev.cp.adc.spb
+  192.168.36.28 kaf-broker4.dev.cp.adc.spb
+  192.168.36.29 kaf-broker5.dev.cp.adc.spb

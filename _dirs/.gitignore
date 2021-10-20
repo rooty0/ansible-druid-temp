@@ -1,0 +1,9 @@
+*.retry
+*.pyc
+*.swp
+.vagrant
+*.log
+ansible.cfg.dpkg-dist
+hosts
+!environments/*/hosts
+roles/geerlingguy.java
