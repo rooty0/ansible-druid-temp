@@ -1,8 +1,8 @@
-db-dwh1.dev.cp.adc.spb ansible_ssh_host=10.241.1.50
-db-dwh2.dev.cp.adc.spb ansible_ssh_host=10.241.1.51
-db-dwh3.dev.cp.adc.spb ansible_ssh_host=10.241.1.52
+164.90.184.208 ansible_connection=ssh    ansible_user=root   coordinator=true overlord=true
+164.90.184.200 ansible_connection=ssh    ansible_user=root   historical=true middleManager=true
+164.90.184.223 ansible_connection=ssh    ansible_user=root   broker=true router=true
 
 [dwh]
-db-dwh1.dev.cp.adc.spb
-db-dwh2.dev.cp.adc.spb
-db-dwh3.dev.cp.adc.spb
+164.90.184.208
+164.90.184.200
+164.90.184.223

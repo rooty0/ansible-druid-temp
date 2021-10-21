@@ -3,8 +3,9 @@
 - name: apply common configuration
   hosts:
     - dwh
-  become: true
+  become: yes
   become_user: root
+  # become_method: su
   roles:
-    - geerlingguy.java
+    # - geerlingguy.java
     - ansible-druid

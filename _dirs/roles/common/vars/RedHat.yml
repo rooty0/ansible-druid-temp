@@ -1,8 +1,0 @@
----
-  DEFAULT_PACKAGES:
-    - htop
-    # - mc
-    # - vim
-    # - git
-    # - python3
-    # - python3-pip
