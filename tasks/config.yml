@@ -2,7 +2,7 @@
 # file: config.yml
 #
 # Druid configurations:
-- name: Copy common.properties for Druid node {{ druid_role }}
+- name: Copy common.properties for all Druid nodes
   template:
     src: _common/common.runtime.properties.j2
     dest: "{{ druid_path }}conf/druid/_common/common.runtime.properties"
@@ -10,7 +10,7 @@
     mode: 0755
   become: yes
 
-- name: Copy core-site.xml for Druid node {{ druid_role }}
+- name: Copy core-site.xml for all Druid nodes
   template:
     src: _common/core-site.xml.j2
     dest: "{{ druid_path }}conf/druid/_common/core-site.xml"
@@ -23,13 +23,60 @@
     state: absent
     path: "{{ druid_path }}conf/druid/_common/log4j2.xml"
 
-- name: Copy log4j2.xml for Druid node {{ druid_role }}
+- name: Copy log4j2.xml for Druid node broker
   template:
-    src: _common/log4j2.xml.j2
-    dest: "{{ druid_path }}conf/druid/{{ druid_role }}/log4j2.xml"
+    src: _common/log4j2_broker.xml.j2
+    dest: "{{ druid_path }}conf/druid/broker/log4j2.xml"
     owner: "{{ druid_user }}"
     mode: 0755
   become: yes
+  when: broker is defined and broker
+
+- name: Copy log4j2.xml for Druid node coordinator
+  template:
+    src: _common/log4j2_coordinator.xml.j2
+    dest: "{{ druid_path }}conf/druid/coordinator/log4j2.xml"
+    owner: "{{ druid_user }}"
+    mode: 0755
+  become: yes
+  when: coordinator is defined and coordinator
+
+- name: Copy log4j2.xml for Druid node historical
+  template:
+    src: _common/log4j2_historical.xml.j2
+    dest: "{{ druid_path }}conf/druid/historical/log4j2.xml"
+    owner: "{{ druid_user }}"
+    mode: 0755
+  become: yes
+  when: historical is defined and historical
+
+- name: Copy log4j2.xml for Druid node middleManager
+  template:
+    src: _common/log4j2_middleManager.xml.j2
+    dest: "{{ druid_path }}conf/druid/middleManager/log4j2.xml"
+    owner: "{{ druid_user }}"
+    mode: 0755
+  become: yes
+  when: middleManager is defined and middleManager
+
+- name: Copy log4j2.xml for Druid node overlord
+  template:
+    src: _common/log4j2_overlord.xml.j2
+    dest: "{{ druid_path }}conf/druid/overlord/log4j2.xml"
+    owner: "{{ druid_user }}"
+    mode: 0755
+  become: yes
+  when: overlord is defined and overlord
+
+- name: Copy log4j2.xml for Druid node router
+  template:
+    src: _common/log4j2_router.xml.j2
+    dest: "{{ druid_path }}conf/druid/router/log4j2.xml"
+    owner: "{{ druid_user }}"
+    mode: 0755
+  become: yes
+  when: router is defined and router
+
 
 - block:
   - name: Make sure the graphite emitter conf directory exists
@@ -49,34 +96,218 @@
     become: yes
   when: druid_emitter == "graphite" and druid_emitter_graphite_whitelist != ""
 
-- name: Copy over specific configuration for Druid node {{ druid_role }}
+- name: Copy over specific configuration for Druid node broker
   template:
-    src: "{{ druid_role }}/runtime.properties"
-    dest: "{{ druid_path }}conf/druid/{{ druid_role }}/"
+    src: "broker/runtime.properties"
+    dest: "{{ druid_path }}conf/druid/broker/"
     owner: "{{ druid_user }}"
     mode: 0755
   become: yes
+  when: broker is defined and broker
 
-- name: Copy over jvm configuration for Druid node {{ druid_role }}
+- name: Copy over specific configuration for Druid node coordinator
   template:
-    src: "{{ druid_role }}/jvm.config"
-    dest: "{{ druid_path }}conf/druid/{{ druid_role }}/"
+    src: "coordinator/runtime.properties"
+    dest: "{{ druid_path }}conf/druid/coordinator/"
     owner: "{{ druid_user }}"
     mode: 0755
   become: yes
+  when: coordinator is defined and coordinator
 
-- name: Copy over systemd service file for druid role {{ druid_role }}
+- name: Copy over specific configuration for Druid node overlord
   template:
-    src: druid.service.j2
-    dest: /lib/systemd/system/druid-{{ druid_role }}.service
+    src: "overlord/runtime.properties"
+    dest: "{{ druid_path }}conf/druid/overlord/"
+    owner: "{{ druid_user }}"
+    mode: 0755
+  become: yes
+  when: overlord is defined and overlord
+
+- name: Copy over specific configuration for Druid node historical
+  template:
+    src: "historical/runtime.properties"
+    dest: "{{ druid_path }}conf/druid/historical/"
+    owner: "{{ druid_user }}"
+    mode: 0755
+  become: yes
+  when: historical is defined and historical
+
+- name: Copy over specific configuration for Druid node middleManager
+  template:
+    src: "middleManager/runtime.properties"
+    dest: "{{ druid_path }}conf/druid/middleManager/"
+    owner: "{{ druid_user }}"
+    mode: 0755
+  become: yes
+  when: middleManager is defined and middleManager
+
+- name: Copy over specific configuration for Druid node router
+  template:
+    src: "router/runtime.properties"
+    dest: "{{ druid_path }}conf/druid/router/"
+    owner: "{{ druid_user }}"
+    mode: 0755
+  become: yes
+  when: router is defined and router
+
+- name: Copy over jvm configuration for Druid node broker
+  template:
+    src: "broker/jvm.config"
+    dest: "{{ druid_path }}conf/druid/broker/"
+    owner: "{{ druid_user }}"
+    mode: 0755
+  become: yes
+  when: broker is defined and broker
+
+- name: Copy over jvm configuration for Druid node coordinator
+  template:
+    src: "coordinator/jvm.config"
+    dest: "{{ druid_path }}conf/druid/coordinator/"
+    owner: "{{ druid_user }}"
+    mode: 0755
+  become: yes
+  when: coordinator is defined and coordinator
+
+- name: Copy over jvm configuration for Druid node overlord
+  template:
+    src: "overlord/jvm.config"
+    dest: "{{ druid_path }}conf/druid/overlord/"
+    owner: "{{ druid_user }}"
+    mode: 0755
+  become: yes
+  when: overlord is defined and overlord
+
+- name: Copy over jvm configuration for Druid node historical
+  template:
+    src: "historical/jvm.config"
+    dest: "{{ druid_path }}conf/druid/historical/"
+    owner: "{{ druid_user }}"
+    mode: 0755
+  become: yes
+  when: historical is defined and historical
+
+- name: Copy over jvm configuration for Druid node middleManager
+  template:
+    src: "middleManager/jvm.config"
+    dest: "{{ druid_path }}conf/druid/middleManager/"
+    owner: "{{ druid_user }}"
+    mode: 0755
+  become: yes
+  when: middleManager is defined and middleManager
+
+- name: Copy over jvm configuration for Druid node router
+  template:
+    src: "router/jvm.config"
+    dest: "{{ druid_path }}conf/druid/router/"
+    owner: "{{ druid_user }}"
+    mode: 0755
+  become: yes
+  when: router is defined and router
+
+- name: Copy over systemd service file for druid role broker
+  template:
+    src: druid.service_broker.j2
+    dest: /lib/systemd/system/druid-broker.service
     owner: root
     mode: 0644
   become: true
+  when: broker is defined and broker
 
-- name: Start druid {{ druid_role }} systemd service
+- name: Copy over systemd service file for druid role coordinator
+  template:
+    src: druid.service_coordinator.j2
+    dest: /lib/systemd/system/druid-coordinator.service
+    owner: root
+    mode: 0644
+  become: true
+  when: coordinator is defined and coordinator
+
+- name: Copy over systemd service file for druid role overlord
+  template:
+    src: druid.service_overlord.j2
+    dest: /lib/systemd/system/druid-overlord.service
+    owner: root
+    mode: 0644
+  become: true
+  when: overlord is defined and overlord
+
+- name: Copy over systemd service file for druid role historical
+  template:
+    src: druid.service_historical.j2
+    dest: /lib/systemd/system/druid-historical.service
+    owner: root
+    mode: 0644
+  become: true
+  when: historical is defined and historical
+
+- name: Copy over systemd service file for druid role middleManager
+  template:
+    src: druid.service_middleManager.j2
+    dest: /lib/systemd/system/druid-middleManager.service
+    owner: root
+    mode: 0644
+  become: true
+  when: middleManager is defined and middleManager
+
+- name: Copy over systemd service file for druid role router
+  template:
+    src: druid.service_router.j2
+    dest: /lib/systemd/system/druid-router.service
+    owner: root
+    mode: 0644
+  become: true
+  when: router is defined and router
+
+- name: Start druid broker systemd service
   systemd:
-    name: druid-{{ druid_role }}
+    name: druid-broker
     state: restarted
     daemon_reload: yes
     enabled: yes
   become: true
+  when: broker is defined and broker
+
+- name: Start druid coordinator systemd service
+  systemd:
+    name: druid-coordinator
+    state: restarted
+    daemon_reload: yes
+    enabled: yes
+  become: true
+  when: coordinator is defined and coordinator
+
+- name: Start druid overlord systemd service
+  systemd:
+    name: druid-overlord
+    state: restarted
+    daemon_reload: yes
+    enabled: yes
+  become: true
+  when: overlord is defined and overlord
+
+- name: Start druid historical systemd service
+  systemd:
+    name: druid-historical
+    state: restarted
+    daemon_reload: yes
+    enabled: yes
+  become: true
+  when: historical is defined and historical
+
+- name: Start druid middleManager systemd service
+  systemd:
+    name: druid-middleManager
+    state: restarted
+    daemon_reload: yes
+    enabled: yes
+  become: true
+  when: middleManager is defined and middleManager
+
+- name: Start druid router systemd service
+  systemd:
+    name: druid-router
+    state: restarted
+    daemon_reload: yes
+    enabled: yes
+  become: true
+  when: router is defined and router

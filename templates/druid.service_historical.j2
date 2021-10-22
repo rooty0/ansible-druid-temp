@@ -1,0 +1,11 @@
+[Unit]
+Description=Druid historical Service
+After=network.target
+
+[Service]
+User={{ druid_user }}
+ExecStart=/bin/sh -c "/usr/bin/java $(/bin/cat {{ druid_path }}conf/druid/historical/jvm.config | /usr/bin/xargs) -cp {{ druid_path }}conf/druid/_common:{{ druid_path }}conf/druid/historical:{{ druid_path }}lib/* io.druid.cli.Main server historical"
+Restart=always
+
+[Install]
+WantedBy=default.target
