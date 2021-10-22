@@ -1,0 +1,11 @@
+[Unit]
+Description=Druid overlord Service
+After=network.target
+
+[Service]
+User={{ druid_user }}
+ExecStart=/bin/sh -c "/usr/bin/java $(/bin/cat {{ druid_path }}conf/druid/overlord/jvm.config | /usr/bin/xargs) -cp {{ druid_path }}conf/druid/_common:{{ druid_path }}conf/druid/overlord:{{ druid_path }}lib/* io.druid.cli.Main server overlord"
+Restart=always
+
+[Install]
+WantedBy=default.target

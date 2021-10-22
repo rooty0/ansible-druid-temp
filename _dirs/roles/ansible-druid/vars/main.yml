@@ -1,0 +1,35 @@
+---
+# file: main.yml
+
+# path and ownership
+druid_user: druid
+druid_path: "/opt/druid/druid-{{ druid_version }}/"
+druid_log_path: /var/log/druid
+
+# metadata password
+# druid_metadata_password: "{{ vault_druid_metadata_password }}"
+druid_metadata_password: "druid_metadata_password"
+
+#postgresql host
+#FIXME: поменять на осмысленное значение!
+pg_host: 192.168.1.3
+
+# postgresql settings
+monit_protection: true
+postgresql_version: 12.0
+# postgresql_version: 9.3
+
+postgresql_databases:
+  - name: druid
+    owner: druid
+
+postgresql_users:
+  - name: druid
+    # pass: "{{ vault_postgresql_users_druid_pass }}"
+    pass: postgres_pass
+    encrypted: no
+
+# zookeeper
+#FIXME: поменять на осмысленное значение!
+zk_host: 192.168.1.2:2181
+

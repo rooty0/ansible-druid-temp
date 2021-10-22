@@ -1,0 +1,11 @@
+[Unit]
+Description=Druid router Service
+After=network.target
+
+[Service]
+User={{ druid_user }}
+ExecStart=/bin/sh -c "/usr/bin/java $(/bin/cat {{ druid_path }}conf/druid/router/jvm.config | /usr/bin/xargs) -cp {{ druid_path }}conf/druid/_common:{{ druid_path }}conf/druid/router:{{ druid_path }}lib/* io.druid.cli.Main server router"
+Restart=always
+
+[Install]
+WantedBy=default.target

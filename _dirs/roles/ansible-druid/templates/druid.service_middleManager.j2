@@ -1,0 +1,11 @@
+[Unit]
+Description=Druid middleManager Service
+After=network.target
+
+[Service]
+User={{ druid_user }}
+ExecStart=/bin/sh -c "/usr/bin/java $(/bin/cat {{ druid_path }}conf/druid/middleManager/jvm.config | /usr/bin/xargs) -cp {{ druid_path }}conf/druid/_common:{{ druid_path }}conf/druid/middleManager:{{ druid_path }}lib/* io.druid.cli.Main server middleManager"
+Restart=always
+
+[Install]
+WantedBy=default.target
