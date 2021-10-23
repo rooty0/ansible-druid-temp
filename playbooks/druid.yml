@@ -1,0 +1,11 @@
+---
+
+- name: apply common configuration
+  hosts:
+    - dwh
+  become: yes
+  become_user: root
+  # become_method: su
+  roles:
+    # - geerlingguy.java
+    - ansible-druid

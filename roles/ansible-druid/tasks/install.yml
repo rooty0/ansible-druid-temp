@@ -29,6 +29,8 @@
         owner={{ druid_user }}
   become: yes
 
+
+
 - name: Create mnt/tmp dir only for historical middleManager and realtime nodes
   file: path=/mnt/tmp state=directory mode=0755
         owner={{ druid_user }}
@@ -112,3 +114,53 @@
     group: staff
     mode: 755
   when: druid_install_sigar is defined and druid_install_sigar
+
+# FIXME: create {{ druid_path }}/conf/druid/_common dir
+- name: Create {{ druid_path }}/conf/druid/_common directory
+  file: path={{ druid_path }}/conf/druid/_common state=directory mode=0755
+        owner={{ druid_user }}
+  become: yes
+
+# FIXME: create {{ druid_path }}/conf/druid/broker dir on broker node
+- name: Create {{ druid_path }}/conf/druid/broker directory
+  file: path={{ druid_path }}/conf/druid/broker state=directory mode=0755
+        owner={{ druid_user }}
+  become: yes
+  when: broker is defined and broker
+
+
+# FIXME: create {{ druid_path }}/conf/druid/coordinator dir on coordinator node
+- name: Create {{ druid_path }}/conf/druid/coordinator directory
+  file: path={{ druid_path }}/conf/druid/coordinator state=directory mode=0755
+        owner={{ druid_user }}
+  become: yes
+  when: coordinator is defined and coordinator
+
+
+# FIXME: create {{ druid_path }}/conf/druid/historical dir on coordinator node
+- name: Create {{ druid_path }}/conf/druid/historical directory
+  file: path={{ druid_path }}/conf/druid/historical state=directory mode=0755
+        owner={{ druid_user }}
+  become: yes
+  when: historical is defined and historical
+
+# FIXME: create {{ druid_path }}/conf/druid/middleManager dir on coordinator node
+- name: Create {{ druid_path }}/conf/druid/middleManager directory
+  file: path={{ druid_path }}/conf/druid/middleManager state=directory mode=0755
+        owner={{ druid_user }}
+  become: yes
+  when: middleManager is defined and middleManager
+
+# FIXME: create {{ druid_path }}/conf/druid/overlord dir on coordinator node
+- name: Create {{ druid_path }}/conf/druid/overlord directory
+  file: path={{ druid_path }}/conf/druid/overlord state=directory mode=0755
+        owner={{ druid_user }}
+  become: yes
+  when: overlord is defined and overlord
+
+# FIXME: create {{ druid_path }}/conf/druid/router dir on router node
+- name: Create {{ druid_path }}/conf/druid/router directory
+  file: path={{ druid_path }}/conf/druid/router state=directory mode=0755
+        owner={{ druid_user }}
+  become: yes
+  when: router is defined and router

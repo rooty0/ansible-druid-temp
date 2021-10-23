@@ -60,12 +60,15 @@ druid_coordinator_port: 8081
 druid_overlord_port: 8090
 
 # broker
-druid_broker_heap_size: 2g
+# druid_broker_heap_size: 2g
+druid_broker_heap_size: 1g
 druid_broker_max_new_size: 1g
-druid_broker_max_direct_size: 2g
+# druid_broker_max_direct_size: 2g
+druid_broker_max_direct_size: 1g
 
 # coordinator
-druid_coordinator_heap_size: 4g
+# druid_coordinator_heap_size: 4g
+druid_coordinator_heap_size: 1g
 
 # historical
 druid_historical_num_http_threads: 10
@@ -73,18 +76,24 @@ druid_historical_buffer_size: 250000000
 # number of cores - 1
 druid_historical_num_threads: 3
 druid_segment_maxsize: 300000000000
-druid_historical_heap_size: 4g
-druid_historical_max_new_size: 2g
-druid_historical_max_direct_size: 10g
+# druid_historical_heap_size: 4g
+# druid_historical_max_new_size: 2g
+# druid_historical_max_direct_size: 10g
+
+druid_historical_heap_size: 1g
+druid_historical_max_new_size: 1g
+druid_historical_max_direct_size: 1g
 
 # middle manager
 druid_mm_worker_capacity: 2
-druid_mm_java_opts_array: '["-server", "-Xmx8g", "-Xms4g", "-XX:+UseG1GC", "-XX:G1HeapRegionSize=16m", "-XX:MaxDirectMemorySize=10240g", "-XX:MaxGCPauseMillis=100", "-XX:+PrintGCDetails", "-XX:+PrintGCTimeStamps", "-XX:+PrintReferenceGC", "-XX:+PrintAdaptiveSizePolicy", "-XX:+ExitOnOutOfMemoryError", "-Duser.timezone=UTC", "-Dfile.encoding=UTF-8"]'
+# druid_mm_java_opts_array: '["-server", "-Xmx8g", "-Xms4g", "-XX:+UseG1GC", "-XX:G1HeapRegionSize=16m", "-XX:MaxDirectMemorySize=10240g", "-XX:MaxGCPauseMillis=100", "-XX:+PrintGCDetails", "-XX:+PrintGCTimeStamps", "-XX:+PrintReferenceGC", "-XX:+PrintAdaptiveSizePolicy", "-XX:+ExitOnOutOfMemoryError", "-Duser.timezone=UTC", "-Dfile.encoding=UTF-8"]'
+druid_mm_java_opts_array: '["-server", "-Xmx1g", "-Xms1g", "-XX:+UseG1GC", "-XX:G1HeapRegionSize=16m", "-XX:MaxDirectMemorySize=10240g", "-XX:MaxGCPauseMillis=100", "-XX:+PrintGCDetails", "-XX:+PrintGCTimeStamps", "-XX:+PrintReferenceGC", "-XX:+PrintAdaptiveSizePolicy", "-XX:+ExitOnOutOfMemoryError", "-Duser.timezone=UTC", "-Dfile.encoding=UTF-8"]'
 druid_indexer_logs_type: file
 druid_indexer_logs_s3Bucket:
 druid_indexer_logs_s3Prefix:
 druid_indexer_worker_version: 0
 
 # overlord
-druid_overlord_heap_size: 4g
+# druid_overlord_heap_size: 4g
+druid_overlord_heap_size: 1g
 druid_overlord_max_new_size: 256m
