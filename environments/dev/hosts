@@ -3,6 +3,6 @@ dhw2 ansible_ssh_host=164.90.184.200 ansible_connection=ssh    ansible_user=root
 dhw3 ansible_ssh_host=164.90.184.223 ansible_connection=ssh    ansible_user=root   broker=true router=true
 
 [dwh]
-dhw1
-dhw2
-dhw3
+dwh1 coordinator_overlord=true
+dwh2 historical=true middleManager=true
+dwh3 broker=true router=true
