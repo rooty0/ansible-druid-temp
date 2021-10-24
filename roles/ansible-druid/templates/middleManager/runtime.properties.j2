@@ -1,6 +1,6 @@
 druid.service=druid/middleManager
 druid.host={{ ansible_ec2_public_ipv4|default(ansible_default_ipv4.address) }}
-druid.port=8091
+druid.port={{ druid_middle_manager_port }}
 
 # Storage for task logs
 druid.indexer.logs.type={{ druid_indexer_logs_type }}
@@ -9,7 +9,7 @@ druid.indexer.logs.s3Prefix={{ druid_indexer_logs_s3Prefix }}
 
 # Task launch parameters
 druid.indexer.runner.javaOptsArray={{ druid_mm_java_opts_array }}
-druid.indexer.task.baseTaskDir=/mnt/druid/task
+druid.indexer.task.baseTaskDir=var/druid/task
 
 # Peon properties
 druid.indexer.fork.property.druid.processing.buffer.sizeBytes=250000000
@@ -31,5 +31,5 @@ druid.worker.capacity={{ druid_mm_worker_capacity }}
 druid.worker.version={{ druid_indexer_worker_version }}
 
 # Hadoop indexing
-druid.indexer.task.hadoopWorkingPath=/mnt/druid/hadoop-tmp
+druid.indexer.task.hadoopWorkingPath=var/druid/hadoop-tmp
 druid.indexer.task.defaultHadoopCoordinates=["org.apache.hadoop:hadoop-client:2.7.3"]

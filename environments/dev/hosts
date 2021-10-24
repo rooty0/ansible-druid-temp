@@ -1,8 +1,8 @@
-164.90.184.208 ansible_connection=ssh    ansible_user=root   coordinator=true overlord=true
-164.90.184.200 ansible_connection=ssh    ansible_user=root   historical=true middleManager=true
-164.90.184.223 ansible_connection=ssh    ansible_user=root   broker=true router=true
+dhw1 ansible_ssh_host=164.90.184.208 ansible_connection=ssh    ansible_user=root   coordinator=true overlord=true
+dhw2 ansible_ssh_host=164.90.184.200 ansible_connection=ssh    ansible_user=root   historical=true middleManager=true
+dhw3 ansible_ssh_host=164.90.184.223 ansible_connection=ssh    ansible_user=root   broker=true router=true
 
 [dwh]
-164.90.184.208
-164.90.184.200
-164.90.184.223
+dhw1
+dhw2
+dhw3

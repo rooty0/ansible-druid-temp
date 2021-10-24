@@ -1,0 +1,19 @@
+druid.service=druid/indexer
+druid.plaintextPort={{ druid_indexer_port }}
+
+# Number of tasks per indexer
+druid.worker.capacity=4
+
+# Task launch parameters
+druid.indexer.task.baseTaskDir=var/druid/task
+
+# HTTP server threads
+druid.server.http.numThreads=60
+
+# Processing threads and buffers on Indexer
+druid.processing.numMergeBuffers=2
+druid.processing.buffer.sizeBytes=100MiB
+druid.processing.numThreads=4
+
+# Hadoop indexing
+druid.indexer.task.hadoopWorkingPath=var/druid/hadoop-tmp

@@ -3,7 +3,8 @@
 
 # path and ownership
 druid_user: druid
-druid_path: "/opt/druid/druid-{{ druid_version }}/"
+druid_prefix_path: /var/lib/druid
+druid_path: "{{ druid_prefix_path }}/apache-druid-{{ druid_version }}/"
 druid_log_path: /var/log/druid
 
 # metadata password
@@ -31,4 +32,4 @@ postgresql_users:
 
 # zookeeper
 #FIXME: поменять на осмысленное значение!
-zk_host: 192.168.1.2:2181
+# zk_host: 192.168.1.2:2181

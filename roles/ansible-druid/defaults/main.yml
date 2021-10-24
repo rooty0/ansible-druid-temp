@@ -3,10 +3,8 @@
 
 # druid versions
 
-# druid_version: 0.11.0
 druid_version: 0.22.0
 
-# druid_checksum: d50218d11f97612acc1447914e113f1869997640de586daabd85828440c4c546
 druid_checksum: 5ce9ba185361a20694fd107ffc818fb42d13a44911d010739227b5c62a8fc1da
 
 # configuration
@@ -21,7 +19,7 @@ dw_aws_access_key: dw_aws_access_key
 dw_aws_secret_key: dw_aws_secret_key
 
 # experimental features
-druid_sql_enabled: false
+druid_sql_enabled: true
 
 # logging
 druid_emitter: logging
@@ -30,9 +28,9 @@ druid_emitter_configuration:
 
 druid_common_monitoring_monitors:
   - io.druid.java.util.metrics.JvmMonitor
-druid_historical_monitoring_monitors:
-  - io.druid.java.util.metrics.JvmMonitor
-  - io.druid.server.metrics.HistoricalMetricsMonitor
+# druid_historical_monitoring_monitors:
+#   - io.druid.java.util.metrics.JvmMonitor
+#   - io.druid.server.metrics.HistoricalMetricsMonitor
 # set monitors on indexing peons
 druid_middlemanager_monitoring_monitors:
   - io.druid.java.util.metrics.JvmMonitor
@@ -44,31 +42,33 @@ druid_emitter_graphite_whitelist_dir: "{{ druid_path }}conf/druid/_common/emitte
 
 # extensions
 druid_extensions:
-  - druid-kafka-eight
+  # - druid-kafka-eight
   - druid-s3-extensions
-  - druid-hdfs-storage
-  - druid-histogram
+  # - druid-hdfs-storage
+  # - druid-histogram
   - druid-datasketches
-  - postgresql-metadata-storage
-  - druid-datasketches
-  - druid-histogram
+  # - postgresql-metadata-storage
+  # - druid-datasketches
+  # - druid-histogram
   - druid-kafka-indexing-service
 
 # ports
 druid_broker_port: 8082
 druid_coordinator_port: 8081
+druid_historical_port: 8083
+druid_indexer_port: 8091
+druid_middle_manager_port: 8091
 druid_overlord_port: 8090
+druid_router_port: 8888
 
 # broker
-# druid_broker_heap_size: 2g
-druid_broker_heap_size: 1g
-druid_broker_max_new_size: 1g
-# druid_broker_max_direct_size: 2g
-druid_broker_max_direct_size: 1g
+druid_broker_heap_size: 8g
+druid_broker_max_new_size: 8g
+druid_broker_max_direct_size: 4g
 
 # coordinator
-# druid_coordinator_heap_size: 4g
-druid_coordinator_heap_size: 1g
+druid_coordinator_xms: 6g
+druid_coordinator_xmx: 6g
 
 # historical
 druid_historical_num_http_threads: 10
@@ -76,24 +76,37 @@ druid_historical_buffer_size: 250000000
 # number of cores - 1
 druid_historical_num_threads: 3
 druid_segment_maxsize: 300000000000
-# druid_historical_heap_size: 4g
-# druid_historical_max_new_size: 2g
-# druid_historical_max_direct_size: 10g
+druid_historical_xms: 8g
+druid_historical_xmx: 8g
+druid_historical_max_direct_size: 10g
 
-druid_historical_heap_size: 1g
-druid_historical_max_new_size: 1g
-druid_historical_max_direct_size: 1g
+# indexer
+druid_indexer_xms: 4g
+druid_indexer_xmx: 4g
+druid_indexer_max_direct_size: 4g
 
 # middle manager
+druid_middle_manager_xms: 128m
+druid_middle_manager_xmx: 128m
 druid_mm_worker_capacity: 2
-# druid_mm_java_opts_array: '["-server", "-Xmx8g", "-Xms4g", "-XX:+UseG1GC", "-XX:G1HeapRegionSize=16m", "-XX:MaxDirectMemorySize=10240g", "-XX:MaxGCPauseMillis=100", "-XX:+PrintGCDetails", "-XX:+PrintGCTimeStamps", "-XX:+PrintReferenceGC", "-XX:+PrintAdaptiveSizePolicy", "-XX:+ExitOnOutOfMemoryError", "-Duser.timezone=UTC", "-Dfile.encoding=UTF-8"]'
 druid_mm_java_opts_array: '["-server", "-Xmx1g", "-Xms1g", "-XX:+UseG1GC", "-XX:G1HeapRegionSize=16m", "-XX:MaxDirectMemorySize=10240g", "-XX:MaxGCPauseMillis=100", "-XX:+PrintGCDetails", "-XX:+PrintGCTimeStamps", "-XX:+PrintReferenceGC", "-XX:+PrintAdaptiveSizePolicy", "-XX:+ExitOnOutOfMemoryError", "-Duser.timezone=UTC", "-Dfile.encoding=UTF-8"]'
 druid_indexer_logs_type: file
-druid_indexer_logs_s3Bucket:
-druid_indexer_logs_s3Prefix:
+druid_indexer_logs_s3Bucket: ''
+druid_indexer_logs_s3Prefix: ''
 druid_indexer_worker_version: 0
 
 # overlord
-# druid_overlord_heap_size: 4g
 druid_overlord_heap_size: 1g
 druid_overlord_max_new_size: 256m
+
+# router
+druid_router_xms: 1g
+druid_router_xmx: 1g
+druid_router_max_direct_size: 128m
+
+
+# metadata storage
+druid_metadata_storage: derby
+
+# deep storage
+druid_storage_type: local

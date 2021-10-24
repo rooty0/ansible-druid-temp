@@ -20,16 +20,14 @@
     name: "{{ druid_user }}"
 
 - name: Create druid deploy directory
-  file: path=/opt/druid state=directory mode=0755
+  file: path={{ druid_prefix_path }} state=directory mode=0755
         owner={{ druid_user }}
   become: yes
 
 - name: Create druid logging directory
   file: path={{ druid_log_path }} state=directory mode=0755
-        owner={{ druid_user }}
+        owner={{ druid_user }} group={{ druid_user }}
   become: yes
-
-
 
 - name: Create mnt/tmp dir only for historical middleManager and realtime nodes
   file: path=/mnt/tmp state=directory mode=0755
@@ -84,20 +82,20 @@
   get_url:
     # url: http://static.druid.io/artifacts/releases/druid-{{ druid_version }}-bin.tar.gz
     url: https://dlcdn.apache.org/druid/{{ druid_version }}/apache-druid-{{ druid_version }}-bin.tar.gz
-    dest: /opt/druid/druid-{{ druid_version }}-bin.tar.gz
+    dest: /tmp/druid-{{ druid_version }}-bin.tar.gz
     checksum: sha256:{{ druid_checksum }}
     mode: 0777
 
 - name: Un-tar druid download
   unarchive:
-    src: /opt/druid/druid-{{ druid_version }}-bin.tar.gz
-    dest: /opt/druid/
+    src: /tmp/druid-{{ druid_version }}-bin.tar.gz
+    dest: "{{ druid_prefix_path }}"
     copy: no
-    creates: /opt/druid/druid-{{ druid_version }}
+    creates: "{{ druid_prefix_path }}/druid-{{ druid_version }}"
   become: yes
 
 - name: Change ownership of download path
-  file: path=/opt/druid owner={{ druid_user }} recurse=yes mode=0755
+  file: path={{ druid_prefix_path }} owner={{ druid_user }} recurse=yes mode=0755
   become: yes
 
 # - name: Download extensions with pull-deps

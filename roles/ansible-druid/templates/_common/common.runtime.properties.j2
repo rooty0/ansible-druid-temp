@@ -26,11 +26,11 @@
 # More info: http://druid.io/docs/latest/operations/including-extensions.html
 {% if druid_extensions is defined %}
 druid.extensions.loadList=[{% for extension in druid_extensions %}"{{ extension }}"{% if loop.index != loop.length %}, {% endif %}{% endfor %}]
-druid.extensions.directory=/opt/druid/druid-{{ druid_version }}/extensions
+druid.extensions.directory={{ druid_prefix_path }}/apache-druid-{{ druid_version }}/extensions
 {% endif %}
 
 # Hadoop dependencies are bundled in the druid installation package
-druid.extensions.hadoopDependenciesDir=/opt/druid/druid-0.10.1/hadoop-dependencies
+druid.extensions.hadoopDependenciesDir={{ druid_prefix_path }}/druid-0.10.1/hadoop-dependencies
 
 # Log all runtime properties on startup. Disable to avoid logging properties on startup:
 druid.startup.logging.logProperties=true
@@ -42,23 +42,44 @@ druid.indexing.doubleStorage=double
 # Zookeeper
 #
 
+{% if zk_host is defined %}
 druid.zk.service.host={{ zk_host }}
+{% else %}
+druid.zk.service.host=localhost:2181
+{% endif %}
 druid.zk.paths.base=/druid
 
 #
 # Metadata storage
 #
 
+{% if druid_metadata_storage == "derby" or druid_metadata_storage is not defined %}
+# For Derby server on your Druid Coordinator (only viable in a cluster with a single Coordinator, no fail-over):
+druid.metadata.storage.type=derby
+druid.metadata.storage.connector.connectURI=jdbc:derby://localhost:1527/var/druid/metadata.db;create=true
+druid.metadata.storage.connector.host=localhost
+druid.metadata.storage.connector.port=1527
+{% endif %}
+
+{% if druid_metadata_storage == "postgresl" %}
 # For PostgreSQL (make sure to additionally include the Postgres extension):
 druid.metadata.storage.type=postgresql
 druid.metadata.storage.connector.connectURI=jdbc:postgresql://{{ pg_host }}:5432/druid
 druid.metadata.storage.connector.user=druid
 druid.metadata.storage.connector.password={{ druid_metadata_password }}
+{% endif %}
 
 #
 # Deep storage
 #
 
+{% if druid_storage_type == "local" or druid_storage_type is not defined %}
+# For local disk (only viable in a cluster if this is a network mount):
+druid.storage.type=local
+druid.storage.storageDirectory=var/druid/segments
+{% endif %}
+
+{% if druid_storage_type == "s3" %}
 # For S3:
 druid.storage.type=s3
 druid.storage.bucket={{ druid_aws_s3_bucket }}
@@ -66,15 +87,23 @@ druid.storage.baseKey={{ druid_aws_s3_baseKey }}
 druid.storage.storageDirectory={{ druid_aws_s3_bucket }}/{{ druid_aws_s3_baseKey }}
 druid.s3.accessKey={{ dw_aws_access_key }}
 druid.s3.secretKey={{ dw_aws_secret_key }}
-
+{% endif %}
 #
+
 # Indexing service logs
 #
+{% if druid_indexer_logs_type == "file" or druid_indexer_logs_type is not defined %}
+# For local disk (only viable in a cluster if this is a network mount):
+druid.indexer.logs.type=file
+druid.indexer.logs.directory=var/druid/indexing-logs
+{% endif %}
 
+{% if druid_indexer_logs_type == "s3" %}
 # For S3:
 druid.indexer.logs.type=s3
 druid.indexer.logs.s3Bucket={{ druid_aws_s3_bucket }}
 druid.indexer.logs.s3Prefix=druid/indexing-logs
+{% endif %}
 
 #
 # Service discovery

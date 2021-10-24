@@ -4,7 +4,9 @@ After=network.target
 
 [Service]
 User={{ druid_user }}
-ExecStart=/bin/sh -c "/usr/bin/java $(/bin/cat {{ druid_path }}conf/druid/middleManager/jvm.config | /usr/bin/xargs) -cp {{ druid_path }}conf/druid/_common:{{ druid_path }}conf/druid/middleManager:{{ druid_path }}lib/* io.druid.cli.Main server middleManager"
+Environment="JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64"
+#ExecStart=/bin/sh -c "/usr/bin/java $(/bin/cat {{ druid_path }}conf/druid/middleManager/jvm.config | /usr/bin/xargs) -cp {{ druid_path }}conf/druid/_common:{{ druid_path }}conf/druid/middleManager:{{ druid_path }}lib/* org.apache.druid.cli.Main server middleManager"
+ExecStart=/bin/bash -c "{{ druid_path }}bin/middleManager.sh start"
 Restart=always
 
 [Install]

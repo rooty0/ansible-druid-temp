@@ -1,0 +1,20 @@
+druid.service=druid/coordinator
+druid.host={{ ansible_ec2_public_ipv4|default(ansible_default_ipv4.address) }}
+druid.plaintextPort={{ druid_coordinator_port }}
+
+druid.coordinator.startDelay=PT10S
+druid.coordinator.period=PT5S
+
+# Run the overlord service in the coordinator process
+druid.coordinator.asOverlord.enabled=true
+druid.coordinator.asOverlord.overlordService=druid/overlord
+
+druid.indexer.queue.startDelay=PT5S
+
+druid.indexer.runner.type=remote
+druid.indexer.storage.type=metadata
+
+{% if druid_coordinator_monitoring_monitors is defined %}
+# Logging monitors
+druid.monitoring.monitors=[{% for monitor in druid_coordinator_monitoring_monitors %}"{{ monitor }}"{% if loop.index != loop.length %}, {% endif %}{% endfor %}]
+{% endif %}
