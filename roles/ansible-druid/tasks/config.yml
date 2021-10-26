@@ -6,7 +6,7 @@
 - name: Copy common.properties for all Druid nodes
   template:
     src: _common/common.runtime.properties.j2
-    dest: "{{ druid_path }}conf/druid/cluster/_common/common.runtime.properties.j2"
+    dest: "{{ druid_path }}conf/druid/cluster/_common/common.runtime.properties"
     owner: "{{ druid_user }}"
     mode: 0644
 
@@ -113,7 +113,7 @@
 - name: Copy over main configuration for Druid node coordinator-overlord
   template:
     src: "coordinator-overlord/main.config.j2"
-    dest: "{{ druid_path }}conf/druid/cluster/data/master/coordinator-overlord/main.config"
+    dest: "{{ druid_path }}conf/druid/cluster/master/coordinator-overlord/main.config"
     owner: "{{ druid_user }}"
     mode: 0644
   when: coordinator_overlord is defined and coordinator_overlord
@@ -169,7 +169,7 @@
 - name: Copy over jvm configuration for Druid node indexer
   template:
     src: "indexer/jvm.config.j2"
-    dest: "{{ druid_path }}conf/druid/indexer/jvm.config"
+    dest: "{{ druid_path }}conf/druid/cluster/data/indexer/jvm.config"
     owner: "{{ druid_user }}"
     mode: 0644
   when: historical is defined and historical
