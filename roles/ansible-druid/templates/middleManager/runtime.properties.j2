@@ -1,20 +1,24 @@
 druid.service=druid/middleManager
 druid.host={{ ansible_ec2_public_ipv4|default(ansible_default_ipv4.address) }}
-druid.port={{ druid_middle_manager_port }}
+druid.plaintextPort={{ druid_middle_manager_port }}
 
 # Storage for task logs
 druid.indexer.logs.type={{ druid_indexer_logs_type }}
+{% if druid_indexer_logs_s3Bucket is defined %}
 druid.indexer.logs.s3Bucket={{ druid_indexer_logs_s3Bucket }}
+{% endif %}
+{% if druid_indexer_logs_s3Prefix is defined %}
 druid.indexer.logs.s3Prefix={{ druid_indexer_logs_s3Prefix }}
+{% endif %}
 
 # Task launch parameters
 druid.indexer.runner.javaOptsArray={{ druid_mm_java_opts_array }}
 druid.indexer.task.baseTaskDir=var/druid/task
 
 # Peon properties
-druid.indexer.fork.property.druid.processing.buffer.sizeBytes=250000000
+druid.indexer.fork.property.druid.processing.buffer.sizeBytes=100MiB
 druid.indexer.fork.property.druid.processing.numThreads=2
-druid.indexer.fork.property.druid.segmentCache.locations=[{"path": "/mnt/druid/segment_cache", "maxSize": 0}]
+druid.indexer.fork.property.druid.segmentCache.locations=[{"path": "/mnt/druid/segment_cache", "maxSize": "30G"}]
 druid.indexer.fork.property.druid.server.http.numThreads=10
 {% if druid_middlemanager_indexer_storage_settings is defined %}
 {% for (key, value) in druid_middlemanager_indexer_storage_settings %}
